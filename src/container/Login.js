@@ -1,8 +1,8 @@
 import React from 'react'
 import {LoginPage} from "../page";
 
-const Login = props => {
+const Login = () => {
     return <LoginPage/>
 }
 
-export default LoginPage
+export default Login

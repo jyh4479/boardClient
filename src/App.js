@@ -1,15 +1,21 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {Home, Login} from "./container";
+import PrivateRoute from "./util/PrivateRoute";
+import {Fragment} from "react";
 
-function App() {
+const App = () => {
     return (
         <Router>
-            <Routes>
-                <Route exact path={"/"} element={<Home/>}/>
-                <Route path={"/login"} element={<Login/>}/>
-                {/*<Route/>*/}
-                {/*<Route/>*/}
-            </Routes>
+            <Fragment>
+                <Routes>
+                    <Route path={"/login"} element={<Login/>}/>
+                    <Route path={"/"} element={<PrivateRoute/>}>
+                        <Route path={"/"} element={<Home/>}/>
+                    </Route>
+                    {/*<Route/>*/}
+                    {/*<Route/>*/}
+                </Routes>
+            </Fragment>
         </Router>
     );
 }

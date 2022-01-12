@@ -4,9 +4,24 @@ const api = axios.create({
     baseURL: "http://localhost:5000",
 })
 
-const BoardServiceApi = {
-    getContentList: () => {
-        return api.post(`/contentlist`)
+const MemberServiceApi = {
+    getLoginToken: async (id, password) => {
+        const data = {id: id, password: password}
+
+        try {
+            const response = await api.post(`/login`, data)
+            return response.data
+        } catch (e) {
+            return false
+        }
+
     }
 }
-export default BoardServiceApi
+
+const ContentServiceApi = {
+    getContentList: async () => {
+        const response = await api.get(`/contentlist`)
+        return response.data
+    }
+}
+export {ContentServiceApi, MemberServiceApi}
