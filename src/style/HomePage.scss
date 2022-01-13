@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+    border: 1px solid black;
+}
+
+th, td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.button {
+    font-size: 1vw;
+    width: 5vw;
+}
+
+@media (max-width: 1000px) {
+    .button {
+        font-size: 15px;
+        width: 80px;
+    }
+}
+
+.alignRight {
+    float: right;
+}
