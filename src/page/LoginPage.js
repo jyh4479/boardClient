@@ -15,10 +15,8 @@ const LoginPage = props => {
 
         try {
             result = await MemberServiceApi.getLoginToken(id, password)
-            console.log(result)
             if (result) {
                 localStorage.setItem("user-id", id)
-                console.log(localStorage.getItem("user-id"))
                 navigate('/')
             }
         } catch (e) {
