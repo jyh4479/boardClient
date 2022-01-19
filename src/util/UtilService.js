@@ -7,6 +7,10 @@ const FormatService = {
         day = day >= 10 ? day : '0' + day;
         return year + '-' + month + '-' + day;
 
+    },
+    spaceCheck: check => {
+        if (check === "") return null
+        else return check
     }
 }
 
@@ -16,4 +20,4 @@ const DateService = {
     }
 }
 
-export {DateService}
+export {DateService, FormatService}

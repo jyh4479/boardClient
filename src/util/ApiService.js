@@ -25,6 +25,21 @@ const ContentServiceApi = {
         return response.data
     },
 
+    getSearchContentList: async (id, title, writer, date) => {
+        console.log(id, title, writer, date)
+        console.log("test")
+        const response = await api.get(`/searchcontentlist`, {
+            params: {
+                id: id,
+                writer: writer,
+                title: title,
+                date: date
+            }
+        })
+        console.log(response.data)
+        return response.data
+    },
+
     postContent: async (writer, title, detail, date) => {
         const data = {writer: writer, title: title, detail: detail, date: date}
         console.log(data)
