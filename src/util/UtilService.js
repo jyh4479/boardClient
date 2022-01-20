@@ -9,6 +9,7 @@ const FormatService = {
 
     },
     spaceCheck: check => {
+        check = check.trim()
         if (check === "") return null
         else return check
     }
