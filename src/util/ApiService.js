@@ -20,8 +20,19 @@ const MemberServiceApi = {
 }
 
 const ContentServiceApi = {
-    getContentList: async () => {
-        const response = await api.get(`/contentlist`)
+    getContentList: async (pageNumber) => {
+        const response = await api.get(`/contentlist`, {
+            params: {
+                pageNumber: pageNumber
+            }
+        })
+
+        // PageRequest 에 의한 return 형식
+        return response.data.content
+    },
+
+    getContentSize: async () => {
+        const response = await api.get(`/contentsize`)
         return response.data
     },
 

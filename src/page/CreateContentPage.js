@@ -33,7 +33,6 @@ const CreateContentPage = () => {
     return (
         <div>
             <form onSubmit={createContent}>
-                <div>게시판 등록</div>
                 <div>
                     <div>작성자</div>
                     <input ref={writerInput} value={userId}/>

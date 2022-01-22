@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {ContentServiceApi} from '../util/ApiService'
 import {FormatService} from '../util/UtilService'
+import {PageItem, Pagination, Table, Button, FormLabel} from 'react-bootstrap'
 import '../style/HomePage.scss'
 
 const HomePage = props => {
     const navigate = useNavigate()
     const [contentList, setContentList] = useState([])
+    const [pagingCount, setPagingCount] = useState(0)
+    const [curPage, setCurPage] = useState(0)
 
     const [idSelector, setIdSelector] = useState('true')
     const [titleSelector, setTitleSelector] = useState('true')
@@ -19,14 +22,18 @@ const HomePage = props => {
     const inputDate = React.createRef()
 
     useEffect(() => {
-        fetchData().then(r => {
+        fetchData(pagingCount).then(r => {
             console.log("run fetchData")
+        })
+        getPagingCount().then(r => {
+            console.log("run getPagingNumber: ")
         })
     }, [])
 
-    const fetchData = async () => {
-        const responseData = await ContentServiceApi.getContentList();
-        setContentList(responseData)
+    const fetchData = async (pageNumber) => {
+        setCurPage(pageNumber)
+        const responseData = await ContentServiceApi.getContentList(pageNumber);
+        responseData ? setContentList(responseData) : setContentList([])
     }
 
     const searchData = async () => {
@@ -38,7 +45,6 @@ const HomePage = props => {
 
         const responseData = await ContentServiceApi.getSearchContentList(id, title, writer, date);
         setContentList(responseData)
-        console.log('clickTest')
     }
 
     const idSelectorChange = e => {
@@ -66,7 +72,7 @@ const HomePage = props => {
                 <td>{item.writer}</td>
                 <td>{item.date}</td>
                 <td>
-                    <button onClick={() => deleteContent(localStorage.getItem('user-id'), item.id)}>삭제</button>
+                    <Button onClick={() => deleteContent(localStorage.getItem('user-id'), item.id)}>삭제</Button>
                 </td>
             </tr>
         ))
@@ -78,11 +84,24 @@ const HomePage = props => {
         await fetchData()
     }
 
+    const getPagingCount = async () => {
+        const result = await ContentServiceApi.getContentSize()
+        result ? setPagingCount(result) : setPagingCount(1)
+    }
+
+    const makePagingBar = now => {
+        const view = []
+        for (let num = 0; num < pagingCount; num++) {
+            view.push(
+                <PageItem key={num} active={now === num} onClick={() => fetchData(num)}>{num + 1}</PageItem>
+            )
+        }
+        return view
+    }
+
     return (
         <div>
-            <div>게시판 목록</div>
-            <table>
-
+            <Table striped bordered hover>
                 <thead>
                 <tr>
                     <th>
@@ -114,7 +133,7 @@ const HomePage = props => {
                         <input ref={inputDate} disabled={dateSelector === 'true' ? true : false}/>
                     </th>
                     <th>
-                        <button onClick={searchData}>검색</button>
+                        <Button onClick={searchData}>검색</Button>
                     </th>
                 </tr>
                 </thead>
@@ -133,15 +152,17 @@ const HomePage = props => {
                 {viewData(contentList)}
                 </tbody>
 
-            </table>
+            </Table>
 
-            <button className={'alignRight button'}
+            <Button className={'alignRight button'}
                     onClick={e => {
                         navigate("/contentform")
                         e.preventDefault()
                     }}
             >등록
-            </button>
+            </Button>
+
+            <Pagination>{makePagingBar(curPage)}</Pagination>
 
         </div>
     )
