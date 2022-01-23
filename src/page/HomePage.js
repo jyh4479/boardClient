@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {ContentServiceApi} from '../util/ApiService'
 import {FormatService} from '../util/UtilService'
-import {PageItem, Pagination, Table, Button, FormLabel} from 'react-bootstrap'
+import {Button, PageItem, Pagination, Table} from 'react-bootstrap'
 import '../style/HomePage.scss'
 
 const HomePage = props => {
@@ -22,7 +22,7 @@ const HomePage = props => {
     const inputDate = React.createRef()
 
     useEffect(() => {
-        fetchData(pagingCount).then(r => {
+        fetchData(curPage).then(r => {
             console.log("run fetchData")
         })
         getPagingCount().then(r => {
@@ -32,19 +32,14 @@ const HomePage = props => {
 
     const fetchData = async (pageNumber) => {
         setCurPage(pageNumber)
-        const responseData = await ContentServiceApi.getContentList(pageNumber);
-        responseData ? setContentList(responseData) : setContentList([])
-    }
-
-    const searchData = async () => {
 
         const id = idSelector === 'false' ? FormatService.spaceCheck(inputId.current.value) : null
         const title = titleSelector === 'false' ? FormatService.spaceCheck(inputTitle.current.value) : null
         const writer = writerSelector === 'false' ? FormatService.spaceCheck(inputWriter.current.value) : null
         const date = dateSelector === 'false' ? FormatService.spaceCheck(inputDate.current.value) : null
 
-        const responseData = await ContentServiceApi.getSearchContentList(id, title, writer, date);
-        setContentList(responseData)
+        const responseData = await ContentServiceApi.getContentList(pageNumber, id, title, writer, date);
+        responseData ? setContentList(responseData) : setContentList([])
     }
 
     const idSelectorChange = e => {
@@ -81,11 +76,17 @@ const HomePage = props => {
     const deleteContent = async (id, contentNumber) => {
         const result = await ContentServiceApi.deleteContent(id, contentNumber)
         result ? alert('삭제 성공') : alert('삭제 실패')
-        await fetchData()
+        await fetchData(curPage)
     }
 
     const getPagingCount = async () => {
-        const result = await ContentServiceApi.getContentSize()
+
+        const id = idSelector === 'false' ? FormatService.spaceCheck(inputId.current.value) : null
+        const title = titleSelector === 'false' ? FormatService.spaceCheck(inputTitle.current.value) : null
+        const writer = writerSelector === 'false' ? FormatService.spaceCheck(inputWriter.current.value) : null
+        const date = dateSelector === 'false' ? FormatService.spaceCheck(inputDate.current.value) : null
+
+        const result = await ContentServiceApi.getContentSize(id, title, writer, date)
         result ? setPagingCount(result) : setPagingCount(1)
     }
 
@@ -133,7 +134,10 @@ const HomePage = props => {
                         <input ref={inputDate} disabled={dateSelector === 'true' ? true : false}/>
                     </th>
                     <th>
-                        <Button onClick={searchData}>검색</Button>
+                        <Button onClick={() => {
+                            fetchData(0).then(r => console.log("Search Data"))
+                            getPagingCount().then(r => console.log("Search Page Count"))
+                        }}>검색</Button>
                     </th>
                 </tr>
                 </thead>

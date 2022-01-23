@@ -9,7 +9,6 @@ const MemberServiceApi = {
         const data = {id: id, password: password}
 
         try {
-            console.log(data)
             const response = await api.post(`/login`, data)
             return response.data
         } catch (e) {
@@ -20,25 +19,23 @@ const MemberServiceApi = {
 }
 
 const ContentServiceApi = {
-    getContentList: async (pageNumber) => {
+    getContentList: async (pageNumber, id, title, writer, date) => {
         const response = await api.get(`/contentlist`, {
             params: {
-                pageNumber: pageNumber
+                pageNumber: pageNumber,
+                id: id,
+                title: title,
+                writer: writer,
+                date: date
             }
         })
 
         // PageRequest 에 의한 return 형식
-        return response.data.content
-    },
-
-    getContentSize: async () => {
-        const response = await api.get(`/contentsize`)
         return response.data
     },
 
-    getSearchContentList: async (id, title, writer, date) => {
-        console.log(id, title, writer, date)
-        const response = await api.get(`/searchcontentlist`, {
+    getContentSize: async (id, title, writer, date) => {
+        const response = await api.get(`/contentsize`, {
             params: {
                 id: id,
                 title: title,
@@ -46,13 +43,11 @@ const ContentServiceApi = {
                 date: date
             }
         })
-        console.log(response.data)
         return response.data
     },
 
     postContent: async (writer, title, detail, date) => {
         const data = {writer: writer, title: title, detail: detail, date: date}
-        console.log(data)
         const response = await api.post(`/content`, data)
         return response.data
     },
@@ -61,7 +56,6 @@ const ContentServiceApi = {
     deleteContent: async (writer, contentNumber) => {
         const data = {writer: writer, contentNumber: contentNumber}
         // const response = await api.delete(`/content`, data)
-        console.log(data)
         const response = await api.post(`/contentDeleteTest`, data)
         return response.data
     }

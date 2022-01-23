@@ -8,6 +8,8 @@ const LoginPage = props => {
     let getId = React.createRef()
     let getPassword = React.createRef()
 
+    const loginWork = new CustomEvent('login')
+
     const login = async (e) => {
         const id = getId.current.value
         const password = getPassword.current.value
@@ -17,6 +19,7 @@ const LoginPage = props => {
             result = await MemberServiceApi.getLoginToken(id, password)
             if (result) {
                 localStorage.setItem("user-id", id)
+                window.dispatchEvent(loginWork)
                 navigate('/')
             }
         } catch (e) {
