@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {DateService} from '../util/UtilService'
 import '../style/Content.scss'
 import {ContentServiceApi} from "../util/ApiService";
+import {Button, Card, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 
 const CreateContentPage = () => {
 
@@ -31,36 +32,42 @@ const CreateContentPage = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={createContent}>
-                <div>
-                    <div>작성자</div>
-                    <input ref={writerInput} value={userId}/>
-                </div>
+        <Card className={'contentCard'}>
+            <Card.Header>게시판 등록</Card.Header>
+            <Card.Body>
+                <FormGroup onSubmit={createContent}>
+                    <div>
+                        <FormLabel>작성자</FormLabel>
+                        <FormControl ref={writerInput} value={userId}/>
+                    </div>
 
-                <div>
-                    <div>날짜</div>
-                    <input ref={dateInput} value={DateService.getCurrentDate()}/>
-                </div>
+                    <div>
+                        <FormLabel>날짜</FormLabel>
+                        <FormControl ref={dateInput} value={DateService.getCurrentDate()}/>
+                    </div>
 
-                <div>
-                    <div>제목</div>
-                    <input ref={titleInput} placeholder={'제목을 입력해주세요...'}/>
-                </div>
+                    <div>
+                        <FormLabel>제목</FormLabel>
+                        <FormControl ref={titleInput} placeholder={'제목을 입력해주세요...'}/>
+                    </div>
 
-                <div>
-                    <div>내용</div>
-                    <textarea ref={detailInput} className={'contentArea'} placeholder={'내용을 입력해주세요...'}/>
-                </div>
-            </form>
+                    <div>
+                        <FormLabel>내용</FormLabel>
+                        <FormControl as={'textarea'} row={5} ref={detailInput} className={'contentArea'}
+                                     placeholder={'내용을 입력해주세요...'}/>
+                    </div>
+                </FormGroup>
+            </Card.Body>
 
-            <button type={'submit'} onClick={createContent}>등록</button>
-            <button onClick={e => {
-                navigate('/')
-                e.preventDefault()
-            }}>취소
-            </button>
-        </div>
+            <Card.Body>
+                <Button type={'submit'} onClick={createContent}>등록</Button>
+                <Button onClick={e => {
+                    navigate('/')
+                    e.preventDefault()
+                }}>취소
+                </Button>
+            </Card.Body>
+        </Card>
     )
 }
 

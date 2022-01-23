@@ -1,6 +1,8 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import {Button, Card, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 import {MemberServiceApi} from "../util/ApiService";
+import '../style/LoginPage.scss'
 
 const LoginPage = props => {
 
@@ -28,15 +30,20 @@ const LoginPage = props => {
     }
 
     return (
-        <div>
-            <div>게시판 로그인</div>
-            <form onSubmit={login}>
-                <div><input ref={getId} name={'id'} placeholder={'id'}></input></div>
-                <div><input ref={getPassword} name={'password'} type={'password'} placeholder={'password'}></input>
-                </div>
-            </form>
-            <button type={'submit'} onClick={login}>로그인</button>
-        </div>
+        <Card className={'loginCard'}>
+            <Card.Header>게시판 로그인</Card.Header>
+            <Card.Body>
+                <FormGroup onSubmit={login}>
+                    <FormLabel>아이디</FormLabel>
+                    <FormControl ref={getId} name={'id'} placeholder={'id'}/>
+                    <FormLabel>비밀번호</FormLabel>
+                    <FormControl ref={getPassword} name={'password'} type={'password'} placeholder={'password'}/>
+                </FormGroup>
+            </Card.Body>
+            <Card.Body>
+                <Button type={'submit'} onClick={login}>로그인</Button>
+            </Card.Body>
+        </Card>
     )
 }
 
