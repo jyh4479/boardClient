@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {DateService} from '../util/UtilService'
 import '../style/Content.scss'
 import {ContentServiceApi} from "../util/ApiService";
-import {Button, Card, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
+import {Button, ButtonGroup, Card, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 
 const CreateContentPage = () => {
 
@@ -60,12 +60,16 @@ const CreateContentPage = () => {
             </Card.Body>
 
             <Card.Body>
-                <Button type={'submit'} onClick={createContent}>등록</Button>
-                <Button onClick={e => {
-                    navigate('/')
-                    e.preventDefault()
-                }}>취소
-                </Button>
+                <ButtonGroup className={'contentButtonAlign'}>
+                    <Button onClick={e => {
+                        navigate('/')
+                        e.preventDefault()
+                    }}>취소
+                    </Button>
+                </ButtonGroup>
+                <ButtonGroup className={'me-2 contentButtonAlign'}>
+                    <Button type={'submit'} onClick={createContent}>등록</Button>
+                </ButtonGroup>
             </Card.Body>
         </Card>
     )

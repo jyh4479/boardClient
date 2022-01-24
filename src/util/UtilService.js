@@ -1,3 +1,10 @@
+const DataService = {
+    nullCheck: data => {
+        if (data === undefined || data === null) return "none"
+        else return data
+    }
+}
+
 const FormatService = {
     getFormatDate: date => {
         let year = date.getFullYear();
@@ -21,4 +28,4 @@ const DateService = {
     }
 }
 
-export {DateService, FormatService}
+export {DateService, FormatService, DataService}

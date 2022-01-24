@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {ContentServiceApi} from '../util/ApiService'
 import {FormatService} from '../util/UtilService'
-import {Button, PageItem, Pagination, Table} from 'react-bootstrap'
+import {Button, ButtonGroup, Card, FormControl, FormSelect, PageItem, Pagination, Table} from 'react-bootstrap'
 import '../style/HomePage.scss'
 
 const HomePage = props => {
@@ -31,14 +31,20 @@ const HomePage = props => {
     }, [])
 
     const fetchData = async (pageNumber) => {
-        setCurPage(pageNumber)
+        // 삭제하고 페이징 view 수정필요
+        const loadPage = pagingCount < pageNumber ? pagingCount : pageNumber
+        console.log("loadPage")
+        console.log(loadPage)
+        console.log("pagingCount")
+        console.log(pagingCount)
+        setCurPage(loadPage)
 
         const id = idSelector === 'false' ? FormatService.spaceCheck(inputId.current.value) : null
         const title = titleSelector === 'false' ? FormatService.spaceCheck(inputTitle.current.value) : null
         const writer = writerSelector === 'false' ? FormatService.spaceCheck(inputWriter.current.value) : null
         const date = dateSelector === 'false' ? FormatService.spaceCheck(inputDate.current.value) : null
 
-        const responseData = await ContentServiceApi.getContentList(pageNumber, id, title, writer, date);
+        const responseData = await ContentServiceApi.getContentList(loadPage, id, title, writer, date);
         responseData ? setContentList(responseData) : setContentList([])
     }
 
@@ -63,7 +69,8 @@ const HomePage = props => {
         return dataList.map(item => (
             <tr id={item.id} className={'contentList'}>
                 <td>{item.id}</td>
-                <td>{item.title}</td>
+                <td onClick={() => navigate(`/detail/${item.id}`
+                )}>{item.title}</td>
                 <td>{item.writer}</td>
                 <td>{item.date}</td>
                 <td>
@@ -76,11 +83,11 @@ const HomePage = props => {
     const deleteContent = async (id, contentNumber) => {
         const result = await ContentServiceApi.deleteContent(id, contentNumber)
         result ? alert('삭제 성공') : alert('삭제 실패')
+        await getPagingCount()
         await fetchData(curPage)
     }
 
     const getPagingCount = async () => {
-
         const id = idSelector === 'false' ? FormatService.spaceCheck(inputId.current.value) : null
         const title = titleSelector === 'false' ? FormatService.spaceCheck(inputTitle.current.value) : null
         const writer = writerSelector === 'false' ? FormatService.spaceCheck(inputWriter.current.value) : null
@@ -101,74 +108,81 @@ const HomePage = props => {
     }
 
     return (
-        <div>
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>
-                        <select name={idSelector} onChange={idSelectorChange}>
-                            <option value={true}>전체</option>
-                            <option value={false}>직접입력</option>
-                        </select>
-                        <input ref={inputId} disabled={idSelector === 'true' ? true : false}/>
-                    </th>
-                    <th>
-                        <select name={titleSelector} onChange={titleSelectorChange}>
-                            <option value={true}>전체</option>
-                            <option value={false}>직접입력</option>
-                        </select>
-                        <input ref={inputTitle} disabled={titleSelector === 'true' ? true : false}></input>
-                    </th>
-                    <th>
-                        <select name={writerSelector} onChange={writerSelectorChange}>
-                            <option value={true}>전체</option>
-                            <option value={false}>직접입력</option>
-                        </select>
-                        <input ref={inputWriter} disabled={writerSelector === 'true' ? true : false}></input>
-                    </th>
-                    <th>
-                        <select value={dateSelector} onChange={dateSelectorChange}>
-                            <option value={true}>전체</option>
-                            <option value={false}>직접입력</option>
-                        </select>
-                        <input ref={inputDate} disabled={dateSelector === 'true' ? true : false}/>
-                    </th>
-                    <th>
-                        <Button onClick={() => {
-                            fetchData(0).then(r => console.log("Search Data"))
-                            getPagingCount().then(r => console.log("Search Page Count"))
-                        }}>검색</Button>
-                    </th>
-                </tr>
-                </thead>
+        <Card>
+            <Card.Body>
+                <Table striped bordered hover>
+                    <thead>
+                    <tr>
+                        <th>
+                            <FormSelect name={idSelector} onChange={idSelectorChange}>
+                                <option value={true}>전체</option>
+                                <option value={false}>직접입력</option>
+                            </FormSelect>
+                            <FormControl ref={inputId} disabled={idSelector === 'true' ? true : false}/>
+                        </th>
+                        <th>
+                            <FormSelect name={titleSelector} onChange={titleSelectorChange}>
+                                <option value={true}>전체</option>
+                                <option value={false}>직접입력</option>
+                            </FormSelect>
+                            <FormControl ref={inputTitle}
+                                         disabled={titleSelector === 'true' ? true : false}></FormControl>
+                        </th>
+                        <th>
+                            <FormSelect name={writerSelector} onChange={writerSelectorChange}>
+                                <option value={true}>전체</option>
+                                <option value={false}>직접입력</option>
+                            </FormSelect>
+                            <FormControl ref={inputWriter}
+                                         disabled={writerSelector === 'true' ? true : false}></FormControl>
+                        </th>
+                        <th>
+                            <FormSelect value={dateSelector} onChange={dateSelectorChange}>
+                                <option value={true}>전체</option>
+                                <option value={false}>직접입력</option>
+                            </FormSelect>
+                            <FormControl ref={inputDate} disabled={dateSelector === 'true' ? true : false}/>
+                        </th>
+                        <th>
+                            <Button onClick={() => {
+                                fetchData(0).then(r => console.log("Search Data"))
+                                getPagingCount().then(r => console.log("Search Page Count"))
+                            }}>검색</Button>
+                        </th>
+                    </tr>
+                    </thead>
 
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>날짜</th>
-                    <th>비고</th>
-                </tr>
-                </thead>
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>날짜</th>
+                        <th>비고</th>
+                    </tr>
+                    </thead>
 
-                <tbody>
-                {viewData(contentList)}
-                </tbody>
+                    <tbody>
+                    {viewData(contentList)}
+                    </tbody>
+                </Table>
+            </Card.Body>
 
-            </Table>
+            <Card.Body>
+                <ButtonGroup className={'alignRight'}>
+                    <Button
+                        onClick={e => {
+                            navigate("/contentform")
+                            e.preventDefault()
+                        }}
+                    >등록
+                    </Button>
+                </ButtonGroup>
+            </Card.Body>
 
-            <Button className={'alignRight button'}
-                    onClick={e => {
-                        navigate("/contentform")
-                        e.preventDefault()
-                    }}
-            >등록
-            </Button>
+            <Pagination className={'pagingButton'}>{makePagingBar(curPage)}</Pagination>
 
-            <Pagination>{makePagingBar(curPage)}</Pagination>
-
-        </div>
+        </Card>
     )
 }
 export default HomePage

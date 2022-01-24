@@ -19,6 +19,19 @@ const MemberServiceApi = {
 }
 
 const ContentServiceApi = {
+
+    getContent: async (id) => {
+        const response = await api.get(`/content`,
+            {
+                params: {
+                    id: id,
+                }
+            }
+        )
+        return response.data
+    },
+
+
     getContentList: async (pageNumber, id, title, writer, date) => {
         const response = await api.get(`/contentlist`, {
             params: {

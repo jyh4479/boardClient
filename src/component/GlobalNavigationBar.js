@@ -11,14 +11,19 @@ const GlobalNavigationBar = () => {
         window.addEventListener('login', () => {
             setUser(localStorage.getItem('user-id'))
         })
+
+        window.removeEventListener('loginCancel', () => console.log("remove event"))
+        window.addEventListener('loginCancel', () => {
+            setUser(null)
+        })
     }, [])
 
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">KOLON 게시판</Navbar.Brand>
+                <Navbar.Brand onClick={() => navigate("/")}>KOLON 게시판</Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
+                    <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
                     <Nav.Link href="#features">Features</Nav.Link>
                     <Nav.Link href="#pricing">Pricing</Nav.Link>
                 </Nav>

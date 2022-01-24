@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Button, Card, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 import {MemberServiceApi} from "../util/ApiService";
@@ -11,6 +11,12 @@ const LoginPage = props => {
     let getPassword = React.createRef()
 
     const loginWork = new CustomEvent('login')
+    const loginCancel = new CustomEvent('loginCancel')
+
+    useEffect(() => {
+        localStorage.clear()
+        dispatchEvent(loginCancel)
+    }, [])
 
     const login = async (e) => {
         const id = getId.current.value

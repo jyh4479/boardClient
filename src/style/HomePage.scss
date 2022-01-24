@@ -23,3 +23,12 @@
 .alignRight {
     float: right;
 }
+
+td, th {
+    text-align : center !important;
+    vertical-align : middle;
+}
+
+.pagingButton{
+    margin: auto;
+}

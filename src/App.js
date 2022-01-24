@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import {CreateContent, Home, Login} from "./container";
+import {CreateContent, Detail, Home, Login} from "./container";
 import {GlobalNavigationBar} from "./component";
 import PrivateRoute from "./util/PrivateRoute";
 import {Fragment} from "react";
@@ -19,6 +19,10 @@ const App = () => {
 
                     <Route path={"/contentform"} element={<PrivateRoute/>}>
                         <Route path={"/contentform"} element={<CreateContent/>}/>
+                    </Route>
+
+                    <Route path={"/detail/:pageId"} element={<PrivateRoute/>}>
+                        <Route path={"/detail/:pageId"} element={<Detail/>}/>
                     </Route>
                 </Routes>
             </Fragment>
