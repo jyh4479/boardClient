@@ -69,7 +69,7 @@ const HomePage = props => {
         return dataList.map(item => (
             <tr id={item.id} className={'contentList'}>
                 <td>{item.id}</td>
-                <td onClick={() => navigate(`/detail/${item.id}`
+                <td className={'contentTitleAction'} onClick={() => navigate(`/detail/${item.id}`
                 )}>{item.title}</td>
                 <td>{item.writer}</td>
                 <td>{item.date}</td>

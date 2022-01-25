@@ -9,26 +9,35 @@
 //}
 
 .button {
-    font-size: 1vw;
-    width: 5vw;
+  font-size: 1vw;
+  width: 5vw;
 }
 
 @media (max-width: 1000px) {
-    .button {
-        font-size: 15px;
-        width: 80px;
-    }
+  .button {
+    font-size: 15px;
+    width: 80px;
+  }
 }
 
 .alignRight {
-    float: right;
+  float: right;
 }
 
 td, th {
-    text-align : center !important;
-    vertical-align : middle;
+  text-align: center !important;
+  vertical-align: middle;
 }
 
-.pagingButton{
-    margin: auto;
+.pagingButton {
+  margin: auto;
+}
+
+.contentTitleAction {
+  cursor: pointer;
+
+  &:hover {
+    color: blue !important;
+    text-decoration: underline;
+  }
 }
