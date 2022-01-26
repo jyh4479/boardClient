@@ -31,6 +31,16 @@ const ContentServiceApi = {
         return response.data
     },
 
+    getCommentList: async (id) => {
+        const response = await api.get(`/commentList`,
+            {
+                params: {
+                    id: id,
+                }
+            }
+        )
+        return response.data
+    },
 
     getContentList: async (pageNumber, id, title, writer, date) => {
         const response = await api.get(`/contentlist`, {
@@ -62,6 +72,13 @@ const ContentServiceApi = {
     postContent: async (writer, title, detail, date) => {
         const data = {writer: writer, title: title, detail: detail, date: date}
         const response = await api.post(`/content`, data)
+        return response.data
+    },
+
+    postComment: async (contentId, writer, detail, date) => {
+        const data = {contentId: contentId, writer: writer, detail: detail, date: date}
+        const response = await api.post(`/comment`, data)
+        console.log(response)
         return response.data
     },
 
