@@ -28,15 +28,28 @@ const DetailPage = props => {
         result ? setCommentData(result) : setCommentData([])
     }
 
+    const deleteComment = async (id, commentNumber) => {
+        const result = await ContentServiceApi.deleteComment(id, commentNumber)
+        result ? alert('삭제 성공') : alert('삭제 실패')
+        await fetchCommentData()
+    }
+
     const viewCommentList = dataList => {
         const view = []
         dataList.forEach(item => {
             view.push(
-                <Container>
+                <Container className={'commentBubble mt-2'}>
+                    <Row className={'commentTitle'}>
+                        <span className={'commentName'}>{item.writer}</span>
+                        <span className={'commentDate col-2'}>{item.date}</span>
+                    </Row>
                     <Row>
-                        <div className={'detailCardTitle col-2'}>{item.writer}</div>
-                        <div className={'detailCardText col-4'}>{item.detail}</div>
-                        <div className={'detailCardText col-4'}>{item.date}</div>
+                        <div className={'detailMargin'}>{item.detail}</div>
+                    </Row>
+                    <Row className={'optionContainer'}>
+                        <span className={'commentOption'}>수정</span>
+                        <span className={'commentOption'}
+                              onClick={() => deleteComment(localStorage.getItem('user-id'), item.id)}>삭제</span>
                     </Row>
                 </Container>
             )

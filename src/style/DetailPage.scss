@@ -9,5 +9,61 @@
 }
 
 .detailCardText {
-  color: lightgray;
+  color: #D3D3D3;
+}
+
+.commentBubble {
+  position: relative;
+  height: 100px;
+  background: #F2F2F2;
+  border-radius: 10px;
+}
+
+.commentBubble:after {
+  border-top: 15px solid #E5E5E5;
+  border-left: 15px solid transparent;
+  border-right: 0px solid transparent;
+  border-bottom: 0px solid transparent;
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: -15px;
+}
+
+.commentTitle {
+  background-color: #E5E5E5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.commentName {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 0 1vw !important;
+  width: auto !important;
+}
+
+.commentDate {
+  color: darkgrey;
+
+  width: auto !important;
+}
+
+.commentOption {
+  color: darkgrey;
+  cursor: pointer;
+  width: auto !important;
+
+  &:hover {
+    color: blue;
+    text-decoration: underline;
+  }
+}
+
+.optionContainer {
+  float: right;
+}
+
+.detailMargin {
+  margin: 1vw 0 0 1vw !important;
 }

@@ -88,6 +88,12 @@ const ContentServiceApi = {
         // const response = await api.delete(`/content`, data)
         const response = await api.post(`/contentDeleteTest`, data)
         return response.data
+    },
+
+    deleteComment: async (writer, commentNumber) => {
+        const data = {writer: writer, contentNumber: commentNumber}
+        const response = await api.post(`/commentDelete`, data)
+        return response.data
     }
 }
 export {ContentServiceApi, MemberServiceApi}
